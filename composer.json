@@ -1,0 +1,25 @@
+{
+    "name": "daverandom/simpleldap",
+    "description": "Extremely succinct object oriented LDAP client API",
+    "keywords": ["ldap"],
+    "homepage": "https://github.com/DaveRandom/SimpleLDAP",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Chris Wright",
+            "email": "simpleldap@daverandom.com",
+            "homepage": "https://github.com/DaveRandom",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "ext-ldap": "*",
+        "daverandom/ldapi": "1.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "SimpleLDAP\\": "src/"
+        }
+    }
+}
