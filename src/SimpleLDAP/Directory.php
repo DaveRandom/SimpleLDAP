@@ -49,7 +49,7 @@ class Directory implements \ArrayAccess
     /**
      * @var int
      */
-    private $port = 389;
+    private $port;
 
     /**
      * @var string
@@ -106,6 +106,20 @@ class Directory implements \ArrayAccess
     {
         $parts = parse_url($uri);
 
+        if (!isset($parts['host'])) {
+            if (substr($uri, 0, 2) === '//') {
+                $parts = parse_url(substr($uri, 2));
+            } else {
+                $parts = parse_url('//' . $uri);
+            }
+
+            if (!isset($parts['host'])) {
+                throw new SimpleLDAPException('Target host must be specified');
+            }
+        }
+
+        $this->host = (string) $parts['host'];
+
         $scheme = 'ldap';
         if (isset($parts['scheme'])) {
             $scheme = strtolower($parts['scheme']);
@@ -120,13 +134,12 @@ class Directory implements \ArrayAccess
             }
         }
 
-        if (!isset($parts['host'])) {
-            throw new SimpleLDAPException('Target host must be specified');
-        }
-        $this->host = (string) $parts['host'];
-
         if (isset($parts['port'])) {
             $this->port = (int) $parts['port'];
+        } else if ($this->securityType === self::SECURITY_SSL) {
+            $this->port = 636;
+        } else {
+            $this->port = 389;
         }
 
         if (!isset($user) && isset($parts['user'])) {
