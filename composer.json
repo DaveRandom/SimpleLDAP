@@ -9,7 +9,7 @@
             "name": "Chris Wright",
             "email": "simpleldap@daverandom.com",
             "homepage": "https://github.com/DaveRandom",
-            "role": "Developer"
+            "role": "Lead Developer"
         }
     ],
     "require": {
@@ -20,8 +20,6 @@
         "phpunit/phpunit": "3.7.*"
     },
     "autoload": {
-        "psr-0": {
-            "SimpleLDAP\\": "src/"
-        }
+        "psr-4": {"SimpleLDAP\\": "src/"}
     }
 }
