@@ -8,7 +8,7 @@
 
 namespace SimpleLDAP;
 
-use LDAPi\Directory as LDAPiDirectory;
+use LDAPi\Directory as LDAPi_Directory;
 
 /**
  * Factory which makes directory objects
@@ -25,6 +25,6 @@ class DirectoryFactory
      */
     public function create($uri, $user = null, $pass = null, array $options = [])
     {
-        return new Directory(new LDAPiDirectory, $uri, $user, $pass, $options);
+        return new Directory(new LDAPi_Directory, $uri, $user, $pass, $options);
     }
 }

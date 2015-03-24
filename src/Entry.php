@@ -37,6 +37,8 @@ class Entry implements \ArrayAccess, \IteratorAggregate, \Countable
 
     /**
      * Convert an ext/ldap formatted entry array to a sane format and store it
+     *
+     * @param array $attrs
      */
     private function storeAttributes(array $attrs)
     {
@@ -104,7 +106,7 @@ class Entry implements \ArrayAccess, \IteratorAggregate, \Countable
     }
 
     /**
-     * List direct descendents of this entry
+     * List direct descendants of this entry
      *
      * @param string   $filter     An LDAP filter string
      * @param string[] $attributes An array of attributes to fetch for the matched objects
@@ -117,7 +119,7 @@ class Entry implements \ArrayAccess, \IteratorAggregate, \Countable
     }
 
     /**
-     * Search descendents of this entry
+     * Search descendants of this entry
      *
      * @param string   $filter     An LDAP filter string
      * @param string[] $attributes An array of attributes to fetch for the matched objects
@@ -132,10 +134,9 @@ class Entry implements \ArrayAccess, \IteratorAggregate, \Countable
     /**
      * Get the parent object of this entry, based on the DN
      *
-     * @param string[] $attributes An array of attributes to fetch for the matched objects
      * @return Entry|null
      */
-    public function parent($attributes = null)
+    public function parent()
     {
         if ($parentDN = trim(implode(',', array_slice(explode(',', $this->dn), 1)))) {
             return new Entry($this->directory, $parentDN);

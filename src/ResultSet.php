@@ -67,7 +67,9 @@ class ResultSet implements \ArrayAccess, \Iterator, \Countable
     }
 
     /**
-     * @throws \LDAPi\EntryCountRetrievalException
+     * @param Directory $directory
+     * @param \LDAPi\ResultSet $resultSet
+     * @throws \LDAPi\EntryCountRetrievalFailureException
      */
     public function __construct(Directory $directory, LDAPi_ResultSet $resultSet)
     {
@@ -94,6 +96,9 @@ class ResultSet implements \ArrayAccess, \Iterator, \Countable
         if (!$this->offsetExists($index)) {
             throw new SimpleLDAPException('Undefined index in result set: ' . $index);
         }
+
+        $i = -1;
+        $entry = null;
 
         try {
             if ($this->directory->getOption(Directory::OPT_ENTRY_PERSISTENCE)) {
@@ -143,6 +148,8 @@ class ResultSet implements \ArrayAccess, \Iterator, \Countable
     /**
      * No effect, collection is read-only
      *
+     * @param mixed $index
+     * @param mixed $value
      * @throws SimpleLDAPException
      */
     public function offsetSet($index, $value)
@@ -153,9 +160,10 @@ class ResultSet implements \ArrayAccess, \Iterator, \Countable
     /**
      * No effect, collection is read-only
      *
+     * @param mixed $index
      * @throws SimpleLDAPException
      */
-    public function offsetUnset($attribute)
+    public function offsetUnset($index)
     {
         throw new SimpleLDAPException('Members of result sets cannot be assigned');
     }

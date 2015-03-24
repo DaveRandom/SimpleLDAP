@@ -8,8 +8,8 @@
 
 namespace SimpleLDAP;
 
-use LDAPi\Directory as LDAPi_Directory,
-    LDAPi\DirectoryOperationFailureException;
+use LDAPi\Directory as LDAPi_Directory;
+use LDAPi\ResultSet as LDAPi_ResultSet;
 
 /**
  * Represents a connection to an LDAP directory
@@ -59,10 +59,11 @@ class Directory implements \ArrayAccess
     /**
      * Factory method for ResultSet objects
      *
+     * @param \LDAPi\ResultSet $result
      * @return ResultSet
-     * @throws \LDAPi\EntryCountRetrievalException
+     * @throws \LDAPi\EntryCountRetrievalFailureException
      */
-    private function createResultSet($result)
+    private function createResultSet(LDAPi_ResultSet $result)
     {
         return new ResultSet($this, $result);
     }
@@ -70,6 +71,7 @@ class Directory implements \ArrayAccess
     /**
      * Factory method for Entry objects
      *
+     * @param \LDAPi\Entry|string $result
      * @return Entry
      */
     private function createEntry($result)
@@ -250,6 +252,7 @@ class Directory implements \ArrayAccess
      * Get an option for this instance
      *
      * @param int $option
+     * @return mixed
      * @throws SimpleLDAPException
      */
     public function getOption($option)
@@ -270,7 +273,7 @@ class Directory implements \ArrayAccess
     }
 
     /**
-     * List direct descendents of an entry
+     * List direct descendants of an entry
      *
      * @param string   $dn         DN of the parent entry
      * @param string   $filter     An LDAP filter string
@@ -294,8 +297,8 @@ class Directory implements \ArrayAccess
     /**
      * Add attribute values to an entry
      *
-     * @param string  $dn         DN of the target entry
-     * @param mixed[] $attributes An array of attributes to modify
+     * @param string $dn    DN of the target entry
+     * @param array  $entry An array of attributes to modify
      * @throws SimpleLDAPException
      */
     public function modAdd($dn, array $entry)
@@ -314,8 +317,8 @@ class Directory implements \ArrayAccess
     /**
      * Delete attribute values from an entry
      *
-     * @param string  $dn         DN of the target entry
-     * @param mixed[] $attributes An array of attributes to modify
+     * @param string $dn    DN of the target entry
+     * @param array  $entry An array of attributes to modify
      * @throws SimpleLDAPException
      */
     public function modDel($dn, array $entry)
@@ -334,8 +337,8 @@ class Directory implements \ArrayAccess
     /**
      * Replace attribute values in an entry
      *
-     * @param string  $dn         DN of the target entry
-     * @param mixed[] $attributes An array of attributes to modify
+     * @param string $dn    DN of the target entry
+     * @param array  $entry An array of attributes to modify
      * @throws SimpleLDAPException
      */
     public function modReplace($dn, array $entry)
@@ -354,8 +357,8 @@ class Directory implements \ArrayAccess
     /**
      * Modify an entry
      *
-     * @param string  $dn         DN of the target entry
-     * @param mixed[] $attributes An array of attributes to modify
+     * @param string $dn    DN of the target entry
+     * @param array  $entry An array of attributes to modify
      * @throws SimpleLDAPException
      */
     public function modify($dn, array $entry)
@@ -428,7 +431,7 @@ class Directory implements \ArrayAccess
     }
 
     /**
-     * Search descendents of an entry in the directory
+     * Search descendants of an entry in the directory
      *
      * @param string   $dn         DN of the parent entry
      * @param string   $filter     An LDAP filter string
